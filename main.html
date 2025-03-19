@@ -53,8 +53,13 @@ function populateVoices() {
         `<option value="${voice.name}">${voice.name} (${voice.lang})</option>`
     )
     .join('');
-}
 
+  // Find the option with "Rishi (en-IN)" and set it as selected
+  let rishiOption = Array.from(voicesDropdown.options).find(option => option.value === 'Rishi (en-IN)');
+  if (rishiOption) {
+    rishiOption.selected = true;
+  }
+}
 // Set selected voice
 function setVoice() {
   msg.voice = voices.find((voice) => voice.name === this.value);
