@@ -1,99 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Speech Synthesis</title>
-  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voiceinator 5000</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <div class="voiceinator">
+    <div class="app">
+        <h1>The Voiceinator 5000</h1>
 
-      <h1>The Voiceinator 5000</h1>
+        <select id="voices"></select>
 
-      <select name="voice" id="voices">
-        <option value="">Rishi (en-IN)</option>
-      </select>
+        <label for="rate">Rate:</label>
+        <input type="range" id="rate" min="0.5" max="2" value="1" step="0.1">
 
-      <label for="rate">Rate:</label>
-      <input name="rate" type="range" min="0" max="3" value="1" step="0.1">
+        <label for="pitch">Pitch:</label>
+        <input type="range" id="pitch" min="0" max="2" value="1" step="0.1">
 
-      <label for="pitch">Pitch:</label>
+        <textarea id="text" placeholder="Type something...">Hello! I love JavaScript 👍</textarea>
 
-      <input name="pitch" type="range" min="0" max="2" step="0.1">
-      <textarea name="text">Hello! I love JavaScript 👍</textarea>
-      <button id="stop">Stop!</button>
-      <button id="speak">Speak</button>
-
+        <div class="buttons">
+            <button id="stop">Stop!</button>
+            <button id="speak">Speak</button>
+        </div>
     </div>
 
-<script>
-  const msg = new SpeechSynthesisUtterance();
-  let voices = [];
-  const voicesDropdown = document.querySelector('[name="voice"]');
-  const options = document.querySelectorAll('[type="range"], [name="text"]');
-  const speakButton = document.querySelector('#speak');
-  const stopButton = document.querySelector('#stop');
-
-  //Your code goes here
-	const msg = new SpeechSynthesisUtterance(); // Create a speech object
-let voices = [];
-const voicesDropdown = document.querySelector('[name="voice"]');
-const options = document.querySelectorAll('[type="range"], [name="text"]');
-const speakButton = document.querySelector('#speak');
-const stopButton = document.querySelector('#stop');
-
-// Populate available voices
-function populateVoices() {
-  voices = window.speechSynthesis.getVoices();
-  voicesDropdown.innerHTML = voices
-    .map(
-      (voice) =>
-        `<option value="${voice.name}">${voice.name} (${voice.lang})</option>`
-    )
-    .join('');
-
-  // Find the option with "Rishi (en-IN)" and set it as selected
-  let rishiOption = Array.from(voicesDropdown.options).find(option => option.value === 'Rishi (en-IN)');
-  if (rishiOption) {
-    rishiOption.selected = true;
-  }
-}
-// Set selected voice
-function setVoice() {
-  msg.voice = voices.find((voice) => voice.name === this.value);
-}
-
-// Start speaking
-function speak() {
-  window.speechSynthesis.cancel(); // Stop any existing speech
-  window.speechSynthesis.speak(msg);
-}
-
-// Stop speaking
-function stopSpeaking() {
-  window.speechSynthesis.cancel();
-}
-
-// Set options dynamically (rate, pitch, and text)
-function setOption() {
-  msg[this.name] = this.value;
-  speak(); // Restart speech if settings are changed mid-speech
-}
-
-// Event Listeners
-voicesDropdown.addEventListener('change', setVoice);
-speakButton.addEventListener('click', speak);
-stopButton.addEventListener('click', stopSpeaking);
-options.forEach((option) => option.addEventListener('change', setOption));
-
-// Load voices (some browsers require an event to fire)
-window.speechSynthesis.addEventListener('voiceschanged', populateVoices);
-
-populateVoices();
-
-</script>
+    <script src="script.js"></script>
 
 </body>
 </html>
