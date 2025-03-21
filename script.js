@@ -1,35 +1,43 @@
 // Your script here.
+// Get references to the elements
 const textInput = document.getElementById("text");
 const voiceSelect = document.getElementById("voices");
-// ... get references to the other elements ...
+const rateInput = document.getElementById("rate");
+const pitchInput = document.getElementById("pitch");
+const speakButton = document.getElementById("speak");
+const stopButton = document.getElementById("stop");
 
 // Initialize the speech synthesis API
 const synth = window.speechSynthesis;
+let voices = [];
 
 // Function to populate the voices dropdown
 function populateVoices() {
-    // Get the list of voices
-    const voices = synth.getVoices();
-    
-    // Populate the dropdown with the voice options
-    // ... your code here ...
+    voices = synth.getVoices();
+    voiceSelect.innerHTML = voices
+        .filter(voice => voice.lang.includes("en")) // Only English voices
+        .map(voice => `<option value="${voice.name}">${voice.name} (${voice.lang})</option>`)
+        .join("");
 }
 
 // Function to start the speech synthesis
 function speak() {
-    // Create a new SpeechSynthesisUtterance object
-    const utterance = new SpeechSynthesisUtterance(textInput.value);
-    
-    // Set the voice, rate, and pitch of the utterance
-    // ... your code here ...
-    
-    // Start the speech synthesis
-    synth.speak(utterance);
+    // Stop any ongoing speech
+    synth.cancel();
+
+    if (textInput.value.trim() !== "") {
+        const utterance = new SpeechSynthesisUtterance(textInput.value);
+        utterance.voice = voices.find(voice => voice.name === voiceSelect.value);
+        utterance.rate = rateInput.value;
+        utterance.pitch = pitchInput.value;
+
+        synth.speak(utterance);
+    }
 }
 
 // Function to stop the speech synthesis
 function stop() {
-    // ... your code here ...
+    synth.cancel();
 }
 
 // Event listeners for the buttons
